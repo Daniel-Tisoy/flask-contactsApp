@@ -1,61 +1,73 @@
-{% extends 'layout.html' %}
-
+{% extends 'layout.html' %} 
 {% block body %}
-
+<!-- vistas por columnas y filas -->
 <div class="row">
-    <div class="col-md-5">
-        <!-- tarjetas de vista -->
-        <div class="car car-body"></div>
+  <div class="col-md-5">
+    <!-- mensajes -->
+    {% with messages = get_flashed_messages() %} 
+    {% if messages %}
+    {% for message in messages %}
+
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
-    <div class="col-md-7"></div>
-</div>
-
-<!-- mensajes -->
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-{% for message in messages %}
-    
-    <div class="alert alert-succes alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-{% endfor %}
-{% endif %}
-{% endwith %}
-
-<form action="/add_contact", method="POST">
-    <input type="text" name="fullname" placeholder="fullname">
-    <input type="text" name="phone" placeholder="phone">
-    <input type="text" name="email" placeholder="email">
-    <button type="submit">Save</button>
-</form>
-
-<table>
-    <thead>
+    {% endfor %} 
+    {% endif %} 
+    {% endwith %} 
+    <!-- tarjetas de vista -->
+    <div class="card card-body">
+      <form action="/add_contact" , method="POST">
+        <div class="form-group">       
+             <input type="text" name="fullname" placeholder="fullname" class="form-control" />
+        </div>
+        <div class="form-group">
+            <input type="text" name="phone" placeholder="phone" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <input type="text" name="email" placeholder="email" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">
+                Save
+            </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="col-md-7">
+    <table class="table table-striped table-bordered bg-white table-sm">
+      <thead>
         <tr>
-            <td>Fullname</td>
-            <td>Phone</td>
-            <td>Email</td>
-            <td>Operations</td>
+          <td>Fullname</td>
+          <td>Phone</td>
+          <td>Email</td>
+          <td>Operations</td>
         </tr>
-    </thead>
-    <tbody>
+      </thead>
+      <tbody>
         {% for contact in contacts %}
         <tr>
-            <td>{{ contact.1 }}</td>
-            <td>{{ contact.2 }}</td>
-            <td>{{ contact.3 }}</td>
-            <td>
-                <!-- selecionar cada contacto a traves de su id -->
-                <a href="/edit/{{contact.0}}">Edit</a>
-                <a href="/delete/{{contact.0}}">Delete</a>
-            </td>
-
+          <td>{{ contact.1 }}</td>
+          <td>{{ contact.2 }}</td>
+          <td>{{ contact.3 }}</td>
+          <td>
+            <!-- selecionar cada contacto a traves de su id -->
+            <!-- clases para que luzcan como botones -->
+            <a href="/edit/{{contact.0}}" class="btn btn-secondary">Edit</a>
+            <a href="/delete/{{contact.0}}" class="btn btn-danger btn-delete">Delete</a>
+          </td>
         </tr>
         {% endfor %}
-    </tbody>
-</table>
-
+      </tbody>
+    </table>
+  </div>
+</div>
 {% endblock %}

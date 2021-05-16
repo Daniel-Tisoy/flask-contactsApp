@@ -20,6 +20,7 @@ def index():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM contacts')
     data = cur.fetchall()
+    cur.close()
     return render_template('index.html', contacts=data)
 
 
@@ -34,6 +35,7 @@ def add_contact():
         cur.execute(
             'INSERT INTO contacts (fullname, phone, email) VALUES (%s, %s, %s)', (fullname, phone, email))
         mysql.connection.commit()
+        cur.close()
         flash('Contact Added Successfully')
         return redirect(url_for('index'))
 
@@ -41,16 +43,19 @@ def add_contact():
 @app.route('/edit/<id>')
 def get_contact(id):
     cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM contacts WHERE id = %s', (id))
+    cur.execute('SELECT * FROM contacts WHERE id = {0}'.format(id))
     data = cur.fetchall()
+    cur.close()
     return render_template('edit-contact.html', contact=data[0])
 
 # esta ruta se llega a traves de edit-contact form
 
 # methods post, define el metodo  a traves del cual se recive para realizar validaciones
+
+
 @app.route('/update/<id>',  methods=['POST'])
 def update_contact(id):
-    
+
     if request.method == 'POST':
         fullname = request.form['fullname']
         phone = request.form['phone']
@@ -62,10 +67,12 @@ def update_contact(id):
                 email = %s,
                 phone = %s
             WHERE id = %s
-         """, (fullname, email,phone, id))
+         """, (fullname, email, phone, id))
         mysql.connection.commit()
+        cur.close()
         flash('Contact updated Succesfully')
         return redirect(url_for('index'))
+
 
 @app.route('/delete/<string:id>')
 def delete_contact(id):
