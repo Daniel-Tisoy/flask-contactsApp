@@ -6,7 +6,7 @@
 <!-- y estara separado a la derecha de 4 col -->
 <div class="col-md-4 offset-md-4">
     <div class="card card-body">
-        <form action="/update/{{contact.0}}", method="POST">
+        <form action="/update/{{contact.0}}" , method="POST">
             <div class="form-group">
                 <input type="text" name="fullname" placeholder="fullname" value="{{ contact.1}}" class="form-control">
             </div>
@@ -19,7 +19,7 @@
             <div class="form-group">
                 <button type="submit" class="btn btn-success btn-block">Save</button>
 
-            </div>           
+            </div>
         </form>
     </div>
 </div>
